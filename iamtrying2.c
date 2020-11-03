@@ -7,25 +7,27 @@ int N; //number of slaves
 int M; //1-M random thread length
 int count; //counting loop?
 
+/* shared data between threads */
+int shared_x;
+pthread_mutex_t lock_x;
+
 /* create thread argument struct for thr_func() */
 typedef struct _thread_data_t {
   int id;
   int length;
 } thread_data_t;
 
-/* shared data between threads */
-double shared_x;
-pthread_mutex_t lock_x;
-
 void *thr_func(void *arg) {
   
   thread_data_t *data = (thread_data_t *)arg;
   
+  sleep(data->length);
+  
   printf("hello from thr_func, thread id: %d\n", data->id);
   /* get mutex before modifying and printing shared_x */
   pthread_mutex_lock(&lock_x);
-  shared_x += data->length;
-  printf("x = %f\n", shared_x);
+  shared_x = data->length;
+  printf("this slave ran for %d time units\n", shared_x);
   pthread_mutex_unlock(&lock_x);
   
   pthread_exit(NULL);
@@ -56,8 +58,10 @@ int main(int argc, char **argv) {
   /* initialize pthread mutex protecting "shared_x" */
   pthread_mutex_init(&lock_x, NULL);
   
+  printf("running the master thread");
+  
   /* create threads */
-  while (count < N){
+  while (i < N){
     sleep(rand()%10); //sleep for random time 
     thr_data[i].id = i;
     thr_data[i].length = (rand() % M) + 1;
@@ -66,12 +70,14 @@ int main(int argc, char **argv) {
       return EXIT_FAILURE;
     }
     sleep(rand()%10); //sleep for random time 
-    count++;
+    i++;
   }
   /* block until all threads complete */
   for (i = 0; i < sizeof(slaves); ++i) {
     pthread_join(slaves[i], NULL);
   }
+  
+  printf("bye");
   
   return EXIT_SUCCESS;
 }
