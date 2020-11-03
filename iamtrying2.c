@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 int N; //number of slaves
-int M; //1-M random thread length
+int M; //1 to M random thread length
 int count; //counting loop?
 
 /* shared data between threads */
@@ -27,12 +27,13 @@ void *thr_func(void *arg) {
   /* get mutex before modifying and printing shared_x */
   pthread_mutex_lock(&lock_x);
   shared_x = data->length;
-  printf("this slave thread ran for %d time units\n", shared_x);
+  printf("this request ran for %d time units\n", shared_x);
   pthread_mutex_unlock(&lock_x);
   
   pthread_exit(NULL);
 }
 
+/*got this from previous lab */
 char readChar() {
   char c = getchar();
   while (getchar() != '\n');
@@ -42,9 +43,9 @@ char readChar() {
 int main(int argc, char **argv) {
   
   printf("N: ");
-  N = readChar() - '0';
+  N = readChar() - '0'; //getting the number of slaves to generate
   printf("M: ");
-  M = readChar() - '0';
+  M = readChar() - '0'; //getting the M to generate random length
   
   pthread_t slaves[N]; //slave threads
   int i, rc;
