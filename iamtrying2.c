@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
       fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
       return EXIT_FAILURE;
     }
-    sleep(rand()); //sleep for random time 
+    sleep(rand()%10); //sleep for random time 
     count++;
   }
   /* block until all threads complete */
