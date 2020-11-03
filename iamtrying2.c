@@ -27,7 +27,7 @@ void *thr_func(void *arg) {
   /* get mutex before modifying and printing shared_x */
   pthread_mutex_lock(&lock_x);
   shared_x = data->length;
-  printf("this slave ran for %d time units\n", shared_x);
+  printf("this slave thread ran for %d time units\n", shared_x);
   pthread_mutex_unlock(&lock_x);
   
   pthread_exit(NULL);
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
   /* initialize pthread mutex protecting "shared_x" */
   pthread_mutex_init(&lock_x, NULL);
   
-  printf("running the master thread");
+  printf("running from the master thread\n");
   
   /* create threads */
   while (i < N){
@@ -72,12 +72,13 @@ int main(int argc, char **argv) {
     sleep(rand()%10); //sleep for random time 
     i++;
   }
-  /* block until all threads complete */
+  /* block until all threads complete
   for (i = 0; i < sizeof(slaves); ++i) {
     pthread_join(slaves[i], NULL);
   }
+   */
   
-  printf("bye");
+  printf("bye\n");
   
   return EXIT_SUCCESS;
 }
