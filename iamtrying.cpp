@@ -46,6 +46,8 @@ int Master(int N, int M){
     sleep(rand()); //sleep for random time
   }
   
+  return EXIT_SUCCESS;
+  
 }
 
 int main(int argc, char **argv) {
@@ -63,7 +65,7 @@ int main(int argc, char **argv) {
 }
 
 
-class Slave(){
+int Slave(){
   
   int state; //busy or not
   
