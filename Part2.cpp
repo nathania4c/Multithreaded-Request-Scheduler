@@ -70,7 +70,7 @@ void *consumer(void * id)
     	curr_tm = localtime(&curr_time);
     	strftime(time_string, 50, "%T", curr_tm);
         
-        printf("Slave %i accepted Request %i of Duration %i at time %s \n", threadID, req, dur, time_string);
+        printf("Slave %i accepted Request %i of Duration %i at time %s \n", *threadID, req, dur, time_string);
         
         pthread_mutex_unlock( &buffer_mutex);
         
@@ -80,7 +80,7 @@ void *consumer(void * id)
         time(&curr_time);
     	curr_tm = localtime(&curr_time);
     	strftime(time_string, 50, "%T", curr_tm);
-        printf("Slave %i finished Request %i at time %s \n", threadID, req, time_string);
+        printf("Slave %i finished Request %i at time %s \n", *threadID, req, time_string);
         
         
     }
