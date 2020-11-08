@@ -160,7 +160,7 @@ int main()
     
     for (int i = 0; i < N-1; i++)
     {
-        int *x = (int *)i;
+        int *x = &i;
         pthread_create(&slaves[i], NULL, consumer, x);
     }
     
