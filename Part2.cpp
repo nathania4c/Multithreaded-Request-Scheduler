@@ -24,7 +24,9 @@ int busyThread = 0;
 
 //mutex that controls who can edit the request buffer
 pthread_mutex_t buffer_mutex = PTHREAD_MUTEX_INITIALIZER; 
+//mutex that controls which thread is running since only one can run at a time
 pthread_mutex_t running_mutex = PTHREAD_MUTEX_INITIALIZER; 
+//conditional variable used when signaling next thread that they can run
 pthread_cond_t  running_cond  = PTHREAD_COND_INITIALIZER; 
 //mutex used in conjunction with the free_cond conditional variable that consumers can use to wake a producer if the buffer is full
 pthread_mutex_t free_slots_mutex = PTHREAD_MUTEX_INITIALIZER; 
@@ -191,13 +193,13 @@ int main(int argc, char **argv) {
   usedSlots = 0;
   
   //get user input
-  cout << "Enter number of slave threads \n";
+  cout << "Enter number of slave threads to generate \n";
   cin >> N;
   
-  cout << "Enter max duration of request \n";
+  cout << "Enter maximum duration of each request \n";
   cin >> M;
   
-  cout << "Enter producer interval \n";
+  cout << "Enter maximum producer interval \n";
   cin >> maxInterval;
   
   //creating slave threads
