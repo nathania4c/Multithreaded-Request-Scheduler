@@ -59,7 +59,7 @@ void *consumer(void *arg) {
     //get buffer mutex and read request
     pthread_mutex_lock( &buffer_mutex);
     //loop buffer to find a request
-    for (int i = 0; i < (*(&buffer + 1) - buffer); i++) 
+    for (int i = 0; i < 10; i++) 
     {
       if (buffer[i][0] != 0) //if this slot is not empty
       {
@@ -73,8 +73,8 @@ void *consumer(void *arg) {
     }
     
     //update used slots and free slots in buffer
-    usedSlots -= 1; 
-    freeSlots += 1;
+    usedSlots--; 
+    freeSlots++;
     
     //wake the producer if it is waiting for free slots
     pthread_mutex_lock( &free_slots_mutex);
@@ -125,7 +125,7 @@ void *producer(void*arg){
     //read and write into buffer
     pthread_mutex_lock( &buffer_mutex); 
     //loop buffer to find a free slot
-    for (int i = 0; i < (*(&buffer + 1) - buffer); i++) 
+    for (int i = 0; i < 10; i++) 
     {
       if (buffer[i][0] == 0) //if this slot is free
       {
@@ -135,10 +135,12 @@ void *producer(void*arg){
       }
       break;
     }
+    //release lock on buffer
+    pthread_mutex_unlock( &buffer_mutex);
     
     //update used and free slots
-    usedSlots += 1; 
-    freeSlots -= 1;
+    usedSlots++; 
+    freeSlots--;
     
     //Time related operations
     time_t curr_time;
@@ -150,15 +152,12 @@ void *producer(void*arg){
     printf("Created request %i of duration %i at time %s \n", reqID, duration, time_string);
     
     //update request id 
-    reqID += 1;
+    reqID++;
     
     //signal a random consumer to wake up and process
     pthread_mutex_lock( &used_slots_mutex);
     pthread_cond_signal( &used_slots_cond); 
     pthread_mutex_unlock( &used_slots_mutex);
-    
-    //release lock on buffer
-    pthread_mutex_unlock( &buffer_mutex);
     
     //sleep before producing the next request
     sleep(interval);
@@ -193,10 +192,11 @@ int main(int argc, char **argv) {
   for (int i = 0; i < N; i++){
     thread_data[i].slaveID = i+1;
     int *x = &i;
-    if ((rc=pthread_create(&slaves[i], NULL, consumer, &thread_data[i]))){
-      fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
-      return EXIT_FAILURE;
-    }
+    pthread_create(&slaves[i], NULL, consumer, &thread_data[i]);
+    // if ((rc=pthread_create(&slaves[i], NULL, consumer, &thread_data[i]))){
+    //   fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
+    //   return EXIT_FAILURE;
+    // }
   }
   
   //2 second sleep to get all slaves initialized and waiting before starting producer thread
@@ -205,6 +205,5 @@ int main(int argc, char **argv) {
   
   while(true)
   {
-    printf("hi");
   }
 }

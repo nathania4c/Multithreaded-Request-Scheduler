@@ -25,8 +25,6 @@ int reqID; //request id
 int used; //used slots in buffer
 int free2; //free slots in buffer, free might be a keyword or something because it does not compile if I use free not free2
 
-
-
 void *consumer(void * id)
 {
     int *threadID = (int *)id;
