@@ -6,11 +6,10 @@ Compile the c++ file by typing `g++ Part2.cpp -lpthread` then `./a.out`.
 
 The terminal might give you a warning but it has no effect on the program's functionality. 
 
-The program will ask you for the number of slave threads, the maximum duration of each request and the interval at which the producer makes new requests. Enter a number for each prompt.
+The program will ask you for the number of slave threads, the maximum duration of each request, and the maximum interval at which the producer waits before making a new requests. Enter an integer for each prompt.
 
-The program runs infinitely, so to stop it press ctrl+c to terminate.
-
+The program will run infinitely. Please press ctrl+c to terminate.
 
 
 ## C++ experience
-Working with a different language is challenging because there are many syntax differences and different features/requirements. It was especially harder to go from Java to C++ than it is from C++ to Java because C++ requires more attention due to pointers and such. However, aside from that there isn't much of a difference between Java and C++, and there are a plethora of online resources and documentations to get help from. 
+Working with C++ was rather challenging, compared to Java, because the syntax and features/requirements require more attention (ex. due to pointers and such). Thankfully, there are a plethora of online resources and documentations to get help from. However, aside from that, there wasn't much of a difference between working with Java and C++, since most of the challenge was in figuring out the algorithm.
