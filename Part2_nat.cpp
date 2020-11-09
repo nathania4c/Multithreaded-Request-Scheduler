@@ -20,13 +20,12 @@ int reqCount; //sequentially increasing request id
 //shared data between threads
 int usedSlots; //used slots in buffer
 int buffer [10][2] = {0}; //item buffer with 10 slots
-int busyThread = 0;
 
 //mutex that controls who can edit the request buffer
 pthread_mutex_t buffer_mutex = PTHREAD_MUTEX_INITIALIZER; 
-//mutex that controls which thread is running since only one can run at a time
+//mutex that controls which thread is in running queue at a time
 pthread_mutex_t running_mutex = PTHREAD_MUTEX_INITIALIZER; 
-//conditional variable used when signaling next thread that they can run
+//conditional variable used when signaling next thread to go into running queue
 pthread_cond_t  running_cond  = PTHREAD_COND_INITIALIZER; 
 //mutex used in conjunction with the free_cond conditional variable that consumers can use to wake a producer if the buffer is full
 pthread_mutex_t free_slots_mutex = PTHREAD_MUTEX_INITIALIZER; 
@@ -39,8 +38,6 @@ pthread_cond_t  used_slots_cond  = PTHREAD_COND_INITIALIZER;
 
 typedef struct _thread_data_t{
   int id;
-  int reqID;
-  int duration;
 } thread_data_t;
 
 void *consumer(void *arg) {
@@ -48,12 +45,13 @@ void *consumer(void *arg) {
   thread_data_t *data = (thread_data_t*)arg;
   int threadID = (data -> id);
   
-  thread_data_t running_thread_data;
-  
-  int reqID;
-  int duration;
+  int reqID=0;
+  int duration=0;
   
   while (true){
+    
+    //entering running queue, only 1 thread a time
+    pthread_mutex_lock( &running_mutex);
     
     //check to see if there are any requests in queue i.e. if any slots are in use
     pthread_mutex_lock( &used_slots_mutex);
@@ -68,17 +66,15 @@ void *consumer(void *arg) {
     //get buffer mutex and read request
     pthread_mutex_lock( &buffer_mutex);
     //loop buffer to find a request
-    for (int i = 0; i < 10; i++) 
-    {
-      if (buffer[i][0] != 0) //if there's no threads waiting
-      {
-        duration = buffer[i][1]; 
+    for (int i = 0; i < 10; i++) {
+      if (buffer[i][0] != 0) { //if the slot is not empty
         reqID = buffer[i][0];
+        duration = buffer[i][1];
         //remove item from queue
         buffer[i][1] = 0; 
         buffer[i][0] = 0;
         
-        //update used slots and free slots in buffer
+        //update used slots
         pthread_mutex_lock(&used_slots_mutex);
         usedSlots = usedSlots - 1;
         pthread_mutex_unlock(&used_slots_mutex);
@@ -87,17 +83,12 @@ void *consumer(void *arg) {
         pthread_mutex_lock( &free_slots_mutex);
         pthread_cond_signal( &free_slots_cond); 
         pthread_mutex_unlock( &free_slots_mutex);
+        
+        break;
       }
-      break;
     }
+    //unlock buffer so producers can use it
     pthread_mutex_unlock( &buffer_mutex);
-    
-    pthread_mutex_lock( &running_mutex);
-    if (busyThread != 0){
-      pthread_cond_wait( &running_cond, &running_mutex ); 
-    }
-    pthread_mutex_unlock( &running_mutex);
-    busyThread = threadID;
     
     //time related operations
     time_t curr_time;
@@ -107,19 +98,18 @@ void *consumer(void *arg) {
     curr_tm = localtime(&curr_time);
     strftime(time_string, 50, "%T", curr_tm);
     
-    printf("Slave %i accepted Request %i of Duration %i at time %s \n", threadID, reqID, duration, time_string);
+    printf("Slave thread %i starting Request %i of Duration %i at time %s \n", threadID, reqID, duration, time_string);
     
     //making the consumer busy for set duration by sleeping
     sleep(duration);
     time(&curr_time);
     curr_tm = localtime(&curr_time);
     strftime(time_string, 50, "%T", curr_tm);
-    printf("Slave %i finished Request %i at time %s \n", threadID, reqID, time_string);
-    
-    busyThread=0;
-    pthread_mutex_lock( &running_mutex);
-    pthread_cond_signal( &running_cond); 
+    printf("Slave thread %i finished Request %i at time %s \n", threadID, reqID, time_string);
+
+    //exit running queue
     pthread_mutex_unlock( &running_mutex);
+
   }
 }
 
@@ -176,7 +166,7 @@ void *producer(void*arg){
     pthread_mutex_unlock( &used_slots_mutex);
     
     //sleep for a random interval before producing the next request
-    interval = (rand() % maxInterval);
+    interval = (rand() % maxInterval + 1);
     sleep(interval);
     
   }
@@ -202,13 +192,13 @@ int main(int argc, char **argv) {
   cout << "Enter maximum producer interval \n";
   cin >> maxInterval;
   
-  //creating slave threads
   N = N+1;
   vector<pthread_t> slaves(N);
   
   for (int i = 0; i < N-1; i++)
   {
     int *x = &i;
+    //starting slave threads
     if ((rc=pthread_create(&slaves[i], NULL, consumer, x))){
       fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
       return EXIT_FAILURE;
@@ -217,8 +207,11 @@ int main(int argc, char **argv) {
   
   //2 second sleep to get all slaves initialized and waiting before starting producer thread
   sleep(2);
-  pthread_create(&slaves[N], NULL, producer, NULL);
-  
+  //starting producer thread
+  if ((pthread_create(&slaves[N], NULL, producer, NULL))){
+    fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
+    return EXIT_FAILURE;
+  }
   while(true)
   {}
 }

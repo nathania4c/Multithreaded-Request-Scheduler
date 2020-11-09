@@ -1,0 +1,126 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 SAMPLE RUN #1: Overloading the buffer
+\f1\b0 \
+\
+nats-mbp:Multithreaded-Request-Scheduler Nat$ g++ Part2_nat.cpp -lpthread\
+nats-mbp:Multithreaded-Request-Scheduler Nat$ ./a.out\
+Enter number of slave threads to generate \
+2\
+Enter maximum duration of each request \
+10\
+Enter maximum producer interval \
+1\
+nothing in the waiting queue, consumer thread is waiting \
+Created request 1 of duration 8 at time 16:14:39 \
+Slave thread 2 starting Request 1 of Duration 8 at time 16:14:39 \
+Created request 2 of duration 4 at time 16:14:40 \
+Created request 3 of duration 4 at time 16:14:41 \
+Created request 4 of duration 4 at time 16:14:42 \
+Created request 5 of duration 4 at time 16:14:43 \
+Created request 6 of duration 4 at time 16:14:44 \
+Created request 7 of duration 4 at time 16:14:45 \
+Created request 8 of duration 4 at time 16:14:46 \
+Slave thread 2 finished Request 1 at time 16:14:47 \
+Slave thread 2 starting Request 2 of Duration 4 at time 16:14:47 \
+Created request 9 of duration 1 at time 16:14:47 \
+Created request 10 of duration 1 at time 16:14:48 \
+Created request 11 of duration 1 at time 16:14:49 \
+Created request 12 of duration 1 at time 16:14:50 \
+Slave thread 2 finished Request 2 at time 16:14:51 \
+Slave thread 2 starting Request 9 of Duration 1 at time 16:14:51 \
+Created request 13 of duration 4 at time 16:14:51 \
+Slave thread 2 finished Request 9 at time 16:14:52 \
+Slave thread 2 starting Request 13 of Duration 4 at time 16:14:52 \
+Created request 14 of duration 10 at time 16:14:52 \
+buffer is full, producer thread is waiting \
+Slave thread 2 finished Request 13 at time 16:14:56 \
+Slave thread 2 starting Request 14 of Duration 10 at time 16:14:56 \
+Created request 15 of duration 3 at time 16:14:56 \
+buffer is full, producer thread is waiting \
+^C\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 SAMPLE RUN #2: Making the consumer wait a long time
+\f1\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+nats-mbp:Multithreaded-Request-Scheduler Nat$ ./a.out\
+Enter number of slave threads to generate \
+10\
+Enter maximum duration of each request \
+2\
+Enter maximum producer interval \
+10\
+nothing in the waiting queue, consumer thread is waiting \
+Created request 1 of duration 2 at time 16:15:22 \
+Slave thread 2 starting Request 1 of Duration 2 at time 16:15:22 \
+Slave thread 2 finished Request 1 at time 16:15:24 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 2 of duration 2 at time 16:15:32 \
+Slave thread 2 starting Request 2 of Duration 2 at time 16:15:32 \
+Slave thread 2 finished Request 2 at time 16:15:34 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 3 of duration 1 at time 16:15:41 \
+Slave thread 2 starting Request 3 of Duration 1 at time 16:15:41 \
+Slave thread 2 finished Request 3 at time 16:15:42 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 4 of duration 1 at time 16:15:44 \
+Slave thread 2 starting Request 4 of Duration 1 at time 16:15:44 \
+Slave thread 2 finished Request 4 at time 16:15:45 \
+nothing in the waiting queue, consumer thread is waiting \
+^C\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 SAMPLE RUN #3: Normal Run
+\f1\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+nats-mbp:Multithreaded-Request-Scheduler Nat$ ./a.out\
+Enter number of slave threads to generate \
+6\
+Enter maximum duration of each request \
+3 \
+Enter maximum producer interval \
+3\
+nothing in the waiting queue, consumer thread is waiting \
+Created request 1 of duration 2 at time 16:17:02 \
+Slave thread 1 starting Request 1 of Duration 2 at time 16:17:02 \
+Created request 2 of duration 3 at time 16:17:04 \
+Slave thread 1 finished Request 1 at time 16:17:04 \
+Slave thread 1 starting Request 2 of Duration 3 at time 16:17:04 \
+Created request 3 of duration 2 at time 16:17:07 \
+Slave thread 1 finished Request 2 at time 16:17:07 \
+Slave thread 2 starting Request 3 of Duration 2 at time 16:17:07 \
+Slave thread 2 finished Request 3 at time 16:17:09 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 4 of duration 1 at time 16:17:10 \
+Slave thread 2 starting Request 4 of Duration 1 at time 16:17:10 \
+Slave thread 2 finished Request 4 at time 16:17:11 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 5 of duration 3 at time 16:17:13 \
+Slave thread 2 starting Request 5 of Duration 3 at time 16:17:13 \
+Created request 6 of duration 1 at time 16:17:15 \
+Slave thread 2 finished Request 5 at time 16:17:16 \
+Slave thread 2 starting Request 6 of Duration 1 at time 16:17:16 \
+Slave thread 2 finished Request 6 at time 16:17:17 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 7 of duration 1 at time 16:17:18 \
+Slave thread 2 starting Request 7 of Duration 1 at time 16:17:18 \
+Slave thread 2 finished Request 7 at time 16:17:19 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 8 of duration 1 at time 16:17:21 \
+Slave thread 2 starting Request 8 of Duration 1 at time 16:17:21 \
+Slave thread 2 finished Request 8 at time 16:17:22 \
+nothing in the waiting queue, consumer thread is waiting \
+Created request 9 of duration 2 at time 16:17:24 \
+Slave thread 2 starting Request 9 of Duration 2 at time 16:17:24 \
+^C\
+nats-mbp:Multithreaded-Request-Scheduler Nat$ }
