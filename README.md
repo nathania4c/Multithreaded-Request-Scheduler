@@ -1,7 +1,7 @@
 # Multithreaded-Request-Scheduler Java & C++
 For Master and N-Slave threads
 
-# Part 1: Java
+## Part 1: Java
 ### How To Run
 To compile the java file in terminal, type `javac part1.java`.
 
