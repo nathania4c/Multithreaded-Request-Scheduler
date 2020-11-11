@@ -1,0 +1,187 @@
+Sample code #1 of normal occurrence
+
+Nat@192 Multithreaded-Request-Scheduler % javac part1.java
+Nat@192 Multithreaded-Request-Scheduler % java part1      
+Enter the number of slave threads: 
+5
+Enter the maximum duration of requests: 
+2
+Enter the interval of request generation: 
+2
+Slave Thread ID: 1 is created
+Slave Thread ID: 2 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 3 is created
+Slave Thread ID: 4 is created
+Queue is empty, consumer waiting
+Queue is empty, consumer waiting
+Slave Thread ID: 5 is created
+Queue is empty, consumer waiting
+Queue is empty, consumer waiting
+Request ID: 1 of duration 2 was created at time 02:01:58
+Slave Thread ID: 1 accepted Request ID: 1 of duration 2 at time 02:01:58
+Request ID: 2 of duration 2 was created at time 02:02:00
+Slave Thread ID: 3 accepted Request ID: 2 of duration 2 at time 02:02:00
+Slave Thread ID: 1 finished Request ID: 1 of duration 2 at time 02:02:00
+Queue is empty, consumer waiting
+Request ID: 3 of duration 1 was created at time 02:02:02
+Slave Thread ID: 3 finished Request ID: 2 of duration 2 at time 02:02:02
+Queue is empty, consumer waiting
+Slave Thread ID: 2 accepted Request ID: 3 of duration 1 at time 02:02:02
+Slave Thread ID: 2 finished Request ID: 3 of duration 1 at time 02:02:03
+Request ID: 4 of duration 1 was created at time 02:02:03
+Slave Thread ID: 2 accepted Request ID: 4 of duration 1 at time 02:02:03
+Slave Thread ID: 4 accepted Request ID: 0 of duration 0 at time 02:02:03
+Slave Thread ID: 4 finished Request ID: 0 of duration 0 at time 02:02:03
+Queue is empty, consumer waiting
+Slave Thread ID: 2 finished Request ID: 4 of duration 1 at time 02:02:04
+Queue is empty, consumer waiting
+Request ID: 5 of duration 1 was created at time 02:02:05
+Slave Thread ID: 5 accepted Request ID: 5 of duration 1 at time 02:02:05
+Request ID: 6 of duration 1 was created at time 02:02:06
+Slave Thread ID: 5 finished Request ID: 5 of duration 1 at time 02:02:06
+Slave Thread ID: 1 accepted Request ID: 6 of duration 1 at time 02:02:06
+Queue is empty, consumer waiting
+Slave Thread ID: 1 finished Request ID: 6 of duration 1 at time 02:02:07
+Queue is empty, consumer waiting
+Request ID: 7 of duration 2 was created at time 02:02:08
+Slave Thread ID: 3 accepted Request ID: 7 of duration 2 at time 02:02:08
+Request ID: 8 of duration 1 was created at time 02:02:09
+Slave Thread ID: 4 accepted Request ID: 8 of duration 1 at time 02:02:09
+Slave Thread ID: 3 finished Request ID: 7 of duration 2 at time 02:02:10
+Queue is empty, consumer waiting
+Slave Thread ID: 4 finished Request ID: 8 of duration 1 at time 02:02:10
+Queue is empty, consumer waiting
+Request ID: 9 of duration 1 was created at time 02:02:11
+Slave Thread ID: 2 accepted Request ID: 9 of duration 1 at time 02:02:11
+Slave Thread ID: 2 finished Request ID: 9 of duration 1 at time 02:02:12
+Queue is empty, consumer waiting
+Request ID: 10 of duration 1 was created at time 02:02:13
+Slave Thread ID: 5 accepted Request ID: 10 of duration 1 at time 02:02:13
+Slave Thread ID: 5 finished Request ID: 10 of duration 1 at time 02:02:14
+Queue is empty, consumer waiting
+Request ID: 11 of duration 1 was created at time 02:02:15
+Slave Thread ID: 1 accepted Request ID: 11 of duration 1 at time 02:02:15
+^C%                                                                             
+
+Sample code #2 of overloading buffer
+
+Nat@192 Multithreaded-Request-Scheduler % java part1
+Enter the number of slave threads: 
+2
+Enter the maximum duration of requests: 
+15
+Enter the interval of request generation: 
+1
+Slave Thread ID: 1 is created
+Slave Thread ID: 2 is created
+Queue is empty, consumer waiting
+Queue is empty, consumer waiting
+Request ID: 1 of duration 6 was created at time 02:04:34
+Slave Thread ID: 1 accepted Request ID: 1 of duration 6 at time 02:04:34
+Request ID: 2 of duration 12 was created at time 02:04:35
+Slave Thread ID: 2 accepted Request ID: 2 of duration 12 at time 02:04:35
+Request ID: 3 of duration 15 was created at time 02:04:36
+Request ID: 4 of duration 12 was created at time 02:04:37
+Request ID: 5 of duration 7 was created at time 02:04:38
+Request ID: 6 of duration 5 was created at time 02:04:39
+Request ID: 7 of duration 9 was created at time 02:04:40
+Slave Thread ID: 1 finished Request ID: 1 of duration 6 at time 02:04:40
+Slave Thread ID: 1 accepted Request ID: 3 of duration 15 at time 02:04:40
+Request ID: 8 of duration 9 was created at time 02:04:41
+Request ID: 9 of duration 6 was created at time 02:04:42
+Request ID: 10 of duration 10 was created at time 02:04:43
+Request ID: 11 of duration 5 was created at time 02:04:44
+Request ID: 12 of duration 8 was created at time 02:04:45
+Request ID: 13 of duration 3 was created at time 02:04:46
+Slave Thread ID: 2 finished Request ID: 2 of duration 12 at time 02:04:47
+Slave Thread ID: 2 accepted Request ID: 8 of duration 9 at time 02:04:47
+Request ID: 14 of duration 13 was created at time 02:04:47
+Queue is full, producer waiting
+Slave Thread ID: 1 finished Request ID: 3 of duration 15 at time 02:04:55
+Slave Thread ID: 1 accepted Request ID: 14 of duration 13 at time 02:04:55
+Request ID: 15 of duration 7 was created at time 02:04:55
+Slave Thread ID: 2 finished Request ID: 8 of duration 9 at time 02:04:56
+Slave Thread ID: 2 accepted Request ID: 15 of duration 7 at time 02:04:56
+Request ID: 16 of duration 6 was created at time 02:04:56
+Queue is full, producer waiting
+Slave Thread ID: 2 finished Request ID: 15 of duration 7 at time 02:05:03
+Slave Thread ID: 2 accepted Request ID: 16 of duration 6 at time 02:05:03
+Request ID: 17 of duration 10 was created at time 02:05:03
+Queue is full, producer waiting
+Slave Thread ID: 1 finished Request ID: 14 of duration 13 at time 02:05:08
+Slave Thread ID: 1 accepted Request ID: 17 of duration 10 at time 02:05:08
+Request ID: 18 of duration 6 was created at time 02:05:08
+Slave Thread ID: 2 finished Request ID: 16 of duration 6 at time 02:05:09
+Slave Thread ID: 2 accepted Request ID: 18 of duration 6 at time 02:05:09
+Request ID: 19 of duration 5 was created at time 02:05:09
+Queue is full, producer waiting
+Slave Thread ID: 2 finished Request ID: 18 of duration 6 at time 02:05:15
+Slave Thread ID: 2 accepted Request ID: 19 of duration 5 at time 02:05:15
+Request ID: 20 of duration 8 was created at time 02:05:15
+Queue is full, producer waiting
+Slave Thread ID: 1 finished Request ID: 17 of duration 10 at time 02:05:18
+Slave Thread ID: 1 accepted Request ID: 20 of duration 8 at time 02:05:18
+Request ID: 21 of duration 14 was created at time 02:05:18
+Queue is full, producer waiting
+Slave Thread ID: 2 finished Request ID: 19 of duration 5 at time 02:05:20
+Slave Thread ID: 2 accepted Request ID: 21 of duration 14 at time 02:05:20
+Request ID: 22 of duration 0 was created at time 02:05:20
+Request ID: 23 of duration 11 was created at time 02:05:21
+Queue is full, producer waiting
+Slave Thread ID: 1 finished Request ID: 20 of duration 8 at time 02:05:26
+Slave Thread ID: 1 accepted Request ID: 23 of duration 11 at time 02:05:26
+Request ID: 24 of duration 10 was created at time 02:05:26
+Queue is full, producer waiting
+^C%                                 
+
+Sample code #3 of consumer kept waiting
+
+Nat@192 Multithreaded-Request-Scheduler % java part1
+Enter the number of slave threads: 
+10
+Enter the maximum duration of requests: 
+1
+Enter the interval of request generation: 
+10
+Slave Thread ID: 1 is created
+Slave Thread ID: 2 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 3 is created
+Slave Thread ID: 4 is created
+Queue is empty, consumer waiting
+Queue is empty, consumer waiting
+Slave Thread ID: 5 is created
+Queue is empty, consumer waiting
+Queue is empty, consumer waiting
+Slave Thread ID: 6 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 7 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 8 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 9 is created
+Queue is empty, consumer waiting
+Slave Thread ID: 10 is created
+Queue is empty, consumer waiting
+Request ID: 1 of duration 1 was created at time 02:06:16
+Slave Thread ID: 1 accepted Request ID: 1 of duration 1 at time 02:06:16
+Slave Thread ID: 1 finished Request ID: 1 of duration 1 at time 02:06:17
+Queue is empty, consumer waiting
+Request ID: 2 of duration 1 was created at time 02:06:22
+Slave Thread ID: 3 accepted Request ID: 2 of duration 1 at time 02:06:22
+Slave Thread ID: 3 finished Request ID: 2 of duration 1 at time 02:06:23
+Queue is empty, consumer waiting
+Request ID: 3 of duration 1 was created at time 02:06:30
+Slave Thread ID: 4 accepted Request ID: 3 of duration 1 at time 02:06:30
+Slave Thread ID: 4 finished Request ID: 3 of duration 1 at time 02:06:31
+Queue is empty, consumer waiting
+Request ID: 4 of duration 1 was created at time 02:06:37
+Slave Thread ID: 2 accepted Request ID: 4 of duration 1 at time 02:06:37
+Slave Thread ID: 2 finished Request ID: 4 of duration 1 at time 02:06:38
+Queue is empty, consumer waiting
+Request ID: 5 of duration 1 was created at time 02:06:44
+Slave Thread ID: 5 accepted Request ID: 5 of duration 1 at time 02:06:44
+Slave Thread ID: 5 finished Request ID: 5 of duration 1 at time 02:06:45
+Queue is empty, consumer waiting
+^C%                                                                             Nat@192 Multithreaded-Request-Scheduler % 
